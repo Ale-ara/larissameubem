@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Para Você, Amor</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    .heart-button {
+      font-size: 60px;
+      cursor: pointer;
+      margin-top: 100px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .message-box {
+      display: none;
+      margin-top: 50px;
+      font-size: 1.5em;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .controls {
+      margin-top: 20px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      color: #ff6b81;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #ffd1dc;
+    }
+
+    #messageImage {
+      max-width: 100%;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+  </style>
+
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <div class="heart-button" id="startHeart">💖</div>
+
+  <div class="message-box" id="messageBox">
+    <div id="messageText"></div>
+    <img id="messageImage" src="" alt="" style="display: none;" />
+    <div class="controls">
+      <button onclick="previousMessage()">⬅️ Voltar</button>
+      <button onclick="nextMessage()">Avançar ➡️</button>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mp3">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    const messages = [
+      "Oi meu amor, preparei isso com muito carinho só pra você 💌",
+      "Quero te lembrar o quanto você é especial na minha vida 💖",
+      "Cada momento ao seu lado é mágico ✨",
+      "Seu sorriso ilumina meus dias 🌞",
+      "E quando eu penso no futuro, é com você que eu quero estar ❤️",
+      {
+        text: "Olha essa foto... um pedacinho da nossa história 📸",
+        image: "https://i.imgur.com/I1syXan.jpeg"
+      },
+      "Obrigado por ser exatamente quem você é 🌹",
+      "Te amo mais do que palavras podem dizer 💘"
+    ];
+
+    let currentIndex = 0;
+    const messageBox = document.getElementById("messageBox");
+    const messageText = document.getElementById("messageText");
+    const messageImage = document.getElementById("messageImage");
+    const startHeart = document.getElementById("startHeart");
+    const bgMusic = document.getElementById("bgMusic");
+
+    startHeart.addEventListener("click", () => {
+      startHeart.style.display = "none";
+      messageBox.style.display = "block";
+      bgMusic.play();
+      showMessage(currentIndex);
+    });
+
+    function showMessage(index) {
+      const message = messages[index];
+
+      if (typeof message === "string") {
+        messageText.textContent = message;
+        messageImage.style.display = "none";
+      } else {
+        messageText.textContent = message.text;
+        messageImage.src = message.image;
+        messageImage.style.display = "block";
+      }
+    }
+
+    function nextMessage() {
+      if (currentIndex < messages.length - 1) {
+        currentIndex++;
+        showMessage(currentIndex);
+        if (currentIndex === messages.length - 1) {
+          // Dispara confete
+          confettiExplosion();
+        }
+      }
+    }
+
+    function previousMessage() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showMessage(currentIndex);
+      }
+    }
+
+    function confettiExplosion() {
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+    }
+  </script>
+</body>
+</html>
